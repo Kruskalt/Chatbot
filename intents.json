@@ -1,0 +1,14 @@
+{"intents": [
+    {"tag": "saludo",
+      "patterns": ["hola", "que tal", "como estas?", "saludos"],
+      "responses": ["Hola!", "Que bueno volver a verte!", "hola en que puedo ayudarte?"],
+      "context_set": ""
+    },
+    {"tag": "nombre",
+      "patterns": ["como te llamas", "cual es tu nombre", "como es tu nombre"],
+      "responses": ["me llamo marcelo", "mi nombre es marcelo", "me llaman marcelo ;)"],
+      "context_set": ""
+    }
+    
+  ]
+  }
