@@ -27,7 +27,7 @@ def get_query_reply(query) :  #se usa un algoritmo matematico, para analizar la 
     best_index = cosine_similarity_results.argsort()[-2]
     documents.remove(query)
     if cosine_similarity_results[best_index] == 0 :
-        return "Disculpa pero no te entiendo!"
+        return "Perdon pero no te entiendo!"
     else :
         return documents[best_index]
 
