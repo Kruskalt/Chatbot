@@ -22,12 +22,12 @@ def get_lemmatized_tokens(text) :
     
 def get_query_reply(query) :  #se usa un algoritmo matematico, para analizar la frecuencia de una palabra y en base a eso elige la respuesta. 
     documents.append(query)                                             #palabras vacias se sacan (a,is,the,are)
-    tfidf_results = TfidfVectorizer(tokenizer = get_lemmatized_tokens, stop_words = 'english').fit_transform(documents)
+    tfidf_results = TfidfVectorizer(tokenizer = get_lemmatized_tokens, stop_words = constants.STOP_WORDS_SPANISH, ).fit_transform(documents)
     cosine_similarity_results = cosine_similarity(tfidf_results[-1], tfidf_results).flatten()
     best_index = cosine_similarity_results.argsort()[-2]
     documents.remove(query)
     if cosine_similarity_results[best_index] == 0 :
-        return "I am sorry! I don't understand you..."
+        return "Perdon pero no te entiendo!"
     else :
         return documents[best_index]
 
@@ -51,7 +51,7 @@ if __name__ == "__main__" :
     corpus = open('corpus.txt', 'r' , errors = 'ignore').read().lower()
     documents = nltk.sent_tokenize(corpus)
 
-    print('RyuzakiBot: My name is RyuzakiBot. I will answer your queries about World Wide Web. If you want to exit just type: Bye!')
+    print('RyuzakiBot: Mi nombre es RyuzakiBot. Esta vez fui modificado para responder otro tipo de preguntas. Si quieres salir escribe: bye')
     end_chat = False
     while end_chat == False :
         input_text = input()
@@ -62,5 +62,5 @@ if __name__ == "__main__" :
             else :
                 print('RyuzakiBot: ' + get_query_reply(input_text))
         else :
-            print('RyuzakiBot: Bye! Take care ' + random.choice(constants.CANDIES))
+            print('RyuzakiBot: Adios! Cuidate.' + random.choice(constants.SWEETS))
             end_chat = True
