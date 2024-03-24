@@ -1,20 +1,19 @@
 # Chatbot
 Equipo: Nazareno Avalos. 
         Matias Nissero.
-        
+
 Comisión: 1
 
 
-<font style="font-size: 24px;" color="light-blue">Introduccion</font>
+# Introduccion
 
 En esta segunda entrega presentaremos la documentación técnica y funcional del chatbot junto con su desarrollo y, además, incluiremos mejoras detectadas, contando la experiencia acerca de cómo nos embarcamos en el desarrollo de nuevas tecnologías como lo son la IA y el Machine Learning.
-
-<font style="font-size: 24px;" color="light-blue">Objetivos del chatbot</font>
+# Objetivos del chatbot
 
  Para comenzar, decidimos buscar en varias partes de internet, entre ellas YouTube y GitHub como las más relevantes, información sobre cómo comenzar a crear nuestro propio chatbot con alguna capacidad de inteligencia, pero quizá no tan avanzado por el momento.
  En nuestra búsqueda nos cruzamos con Ryuzaki Bot, un Chatbot hecho por Lucia Llavero, el cual además de otras, usa principalmente la biblioteca de Python, Scikit-Learn para obtener las respuestas más adecuadas para los usuarios a través de Machine Learning, además, puede ser fácilmente modificado para tomar las funciones que nosotros deseemos. En este caso, nos tomamos la libertad de modificarlo para que tome como su idioma de respuesta el español y modificamos su base de datos para satisfacer las dudas de los usuarios sobre el juego League of Legends, incluyendo un artículo de Wikipedia del juego y una biografía de un personaje del mismo.
 
-<font style="font-size: 24px;" color="light-blue">Modo de uso</font> 
+# Modo de uso
 
 
  El uso del bot es simple, primero es necesario instalar las dependencias  necesarias para la ejecución. Lo haremos escribiendo en la consola el siguiente comando:   <font color="red">pip install -r requirements.txt</font> 
@@ -24,9 +23,9 @@ Luego, simplemente ejecutar el archivo bot_desktop.py y comenzar a hablar con el
 ![](/imagenes/uso.png)
 
 
-<font style="font-size: 24px;" color="light-blue">Código</font> 
+# Código 
 
-<font style="font-size: 19px;" color="light-blue">Main</font> 
+## Main
 
 Al principio de la ejecución, el programa filtra las warnings que pueden llegar a interrumpir con la continuación del mismo, luego, si no están instaladas, intenta descargar el tokenizador de frases punktokenizer, el cual se usa para dividir el texto en oraciones, además de WordNet, una base de datos léxica que se utiliza para el análisis semántico y la representación de palabras en la lingüística computacional.
 
@@ -39,7 +38,7 @@ Luego, entramos en el ciclo el cual determina el flujo de ejecución del chatbot
 ![](/imagenes/main2.png)
 
 
-<font style="font-size: 24px;" color="light-blue">Funciones</font> 
+# Funciones
 
 
 get_formalities_response<br>
