@@ -8,7 +8,15 @@ from nltk.stem import WordNetLemmatizer #Para pasar las palabras a su forma raí
 
 #Para crear la red neuronal
 from keras.models import Sequential
+#Es una clase que permite crear modelos de manera secuencial, capa por capa. 
+# Esta clase es comúnmente utilizada para construir modelos simples y en secuencia 
+# donde la salida de una capa se convierte en la entrada de la siguiente.
+
 from keras.layers import Dense, Activation, Dropout
+
+#en dense se realiza la multiplicacion de matrices entre los datos de entrada y los pesos de la capa.
+#en dropout se desactivan neuronas aleatoriamente para prevenir el sobreajuste(que neuronas influencien en otras).
+
 from keras.optimizers import SGD
 
 lemmatizer = WordNetLemmatizer()

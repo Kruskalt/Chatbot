@@ -52,13 +52,13 @@ def get_response(tag, intents_json):
     return result
 
 #Ejecutamos el chat en bucle
-terminarBucle = False
-while not terminarBucle:
-    message=input("")
-    if message == "bye":
-            terminarBucle = True
-    else:
-        ints = predict_class(message)
-        res = get_response(ints, intents)
-        print(res)
+# terminarBucle = False
+# while not terminarBucle:
+#     message=input("")
+#     if message == "bye":
+#             terminarBucle = True
+#     else:
+#         ints = predict_class(message)
+#         res = get_response(ints, intents)
+#         print(res)
     
