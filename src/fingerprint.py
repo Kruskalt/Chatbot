@@ -2,7 +2,7 @@
 import os
 import cv2
 
-sample = cv2.imread("SOCOFing/Altered/Altered-Hard/30__F_Right_thumb_finger_Obl.BMP")
+sample = cv2.imread("SOCOFing/Altered/1__M_Left_index_finger_CR.BMP")
 
 best_score = 0
 filename = None
