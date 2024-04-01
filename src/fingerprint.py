@@ -73,7 +73,7 @@ def match_fingerprint(sample, fingerprint_images):
 
 def check_fingerprint(user_input):
     sample = load_sample_image(user_input)
-    fingerprint_images = load_fingerprint_images("SOCOFing/Real")
+    fingerprint_images = load_fingerprint_images("src/SOCOFing/Real")
     best_match, best_score = match_fingerprint(sample, fingerprint_images)
 
     if best_match is not None:
@@ -87,15 +87,15 @@ def check_fingerprint(user_input):
         cv2.imshow("Result", result)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-        return True, puntaje
+        return True
     else:
         print("Error: No se encontraron coincidencias con la huella introducida")
-        return False, None
+        return False
 
 def main():
     resultado, puntaje = check_fingerprint("SOCOFing/Altered/1__M_Left_index_finger_CR.BMP")
     print(resultado)
     print(puntaje)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
