@@ -2,14 +2,14 @@
 import os
 import cv2
 
-sample = cv2.imread("SOCOFing/Altered/Altered-Hard/150__M_Right_index_finger_Obl.BMP")
+sample = cv2.imread("SOCOFing/Altered/Altered-Hard/30__F_Right_thumb_finger_Obl.BMP")
 
 best_score = 0
 filename = None
 image = None
 kp1, kp2, mp = None, None, None
 
-for file in os.listdir("SOCOFing/Real")[:1000]: #el [:1000] es un limitante para que solo busque los primeros 1000 ejemplos, quitar si queres buscar en todos  
+for file in os.listdir("SOCOFing/Real"): #el [:1000] es un limitante para que solo busque los primeros 1000 ejemplos, quitar si queres buscar en todos  
     fingerprint_image = cv2.imread(os.path.join("SOCOFing/Real", file))  
 
     if sample is None or fingerprint_image is None:

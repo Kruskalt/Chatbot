@@ -7,3 +7,5 @@
 .DS_Store
 __pycache__/
 kivy_venv/
+src/SOCOFing/
+Real/
