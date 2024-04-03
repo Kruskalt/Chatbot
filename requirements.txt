@@ -3,3 +3,5 @@ scikit-learn
 keras
 tensorflow
 numpy
+kivy
+cv2
