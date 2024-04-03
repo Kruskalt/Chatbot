@@ -8,6 +8,9 @@ from nltk.stem import WordNetLemmatizer
 
 from keras.models import load_model
 
+from difflib import SequenceMatcher
+from keras.preprocessing.sequence import pad_sequences
+
 lemmatizer = WordNetLemmatizer()
 
 #Importamos los archivos generados en el código anterior
@@ -51,14 +54,34 @@ def get_response(tag, intents_json):
             break
     return result
 
+# Función para determinar si la entrada del usuario coincide con alguno de los patrones
+def matches_pattern(user_input, patterns):
+    for pattern in patterns:
+        similarity = SequenceMatcher(None, user_input, pattern).ratio()
+        if similarity > 0.8:  # Ajusta este umbral según sea necesario
+            return True
+    return False
+
+def chatbot_response(user_input):
+    # Obtener los patrones asociados con la etiqueta predicha
+    predicted_tag = predict_class(user_input)
+    patterns = [pattern for intent in intents['intents'] if intent['tag'] == predicted_tag for pattern in intent['patterns']]
+    # Verificar si la entrada del usuario coincide con alguno de los patrones
+    if matches_pattern(user_input, patterns):
+        # Si coincide, obtener una respuesta basada en la categoría predicha
+        response = get_response(predicted_tag, intents)
+    else:
+        # Si no coincide, responder que no se comprendió la pregunta
+        response = "Lo siento, no entendí tu pregunta. ¿Puedes intentarlo de nuevo?"
+    return response
+
 #Ejecutamos el chat en bucle
-# terminarBucle = False
-# while not terminarBucle:
-#     message=input("")
-#     if message == "bye":
-#             terminarBucle = True
-#     else:
-#         ints = predict_class(message)
-#         res = get_response(ints, intents)
-#         print(res)
+#terminarBucle = False
+#while not terminarBucle:
+#    message=input("")
+#    if message == "bye":
+#            terminarBucle = True
+#    else:
+#        res = chatbot_response(message)
+#        print(res)
     

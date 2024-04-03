@@ -34,8 +34,7 @@ class MyPopup(Popup):
 
     def send_input(self, instance):
         # Al hacer clic en el botón, se llama a esta función y se pasa el texto ingresado al callback
-        ints = ch.predict_class(self.input_text.text)
-        res = ch.get_response(ints, ch.intents)
+        res = ch.chatbot_response(self.input_text.text)
         self.callback(res)
         self.message_label.text = res
 
@@ -52,7 +51,7 @@ class MyApp(App):
 
     def check_fingerprint_and_show(self, instance):
         # Verificamos la huella digital
-        if fp.check_fingerprint("src/SOCOFing/Altered/falsa.BMP"):
+        if fp.check_fingerprint("src/SOCOFing/Altered/1__M_Right_little_finger_Zcut.BMP"):
             # Si la huella digital es correcta, mostramos el cuadro de diálogo
             self.show_message()
         else:
