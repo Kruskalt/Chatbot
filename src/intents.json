@@ -1,0 +1,69 @@
+{"intents":[
+    {
+        "tag": "saludo",
+        "patterns": ["hola", "que tal", "como estas", "que onda", "buenas", "saludos"],
+        "responses": ["Hola!", "Buenas", "Como estas?"]
+    },
+    {
+        "tag": "funcion",
+        "patterns": ["cual es tu funcion",
+        "cual es tu funcion",
+        "cuál es tu objetivo",
+        "para qué sirves",
+        "qué función tienes",
+        "qué objetivo tienes",
+        "qué propósito tienes",
+        "qué haces aquí",
+        "cuál es tu rol",
+        "qué función desempeñas",
+        "qué tarea realizas",
+        "qué fin persigues"],
+        "responses": [
+            "Mi función es ser un chatbot diseñado para responder dudas sobre League of Legends.",
+            "Soy un chatbot creado con el propósito de resolver consultas relacionadas con League of Legends.",
+            "Estoy aquí para ayudarte con cualquier pregunta que tengas sobre League of Legends.",
+            "Mi objetivo es proporcionar información y respuestas a las preguntas sobre League of Legends.",
+            "Soy un chatbot especializado en responder consultas relacionadas con League of Legends.",
+            "Responder tus dudas y preguntas sobre League of Legends es mi propósito principal."
+        ]
+    },
+    {
+        "tag": "agradecimiento",
+        "patterns": ["gracias",
+        "muchas gracias",
+        "te agradezco",
+        "agradecido",
+        "gracias de antemano",
+        "mil gracias"],
+        "responses": ["¡De nada!",
+        "¡Con gusto!",
+        "¡Para servirte!",
+        "¡No hay de qué!",
+        "¡Ningún problema!",
+        "¡Estoy aquí para ayudar!",
+        "¡Claro que sí!",
+        "¡Sin problema!"]
+    },
+    {
+        "tag": "league_of_legends",
+        "patterns": ["que es league of legends", "podrias explicarme que es league of legends", "a que te referis con league of legends"],
+        "responses": ["League of Legends es un juego multijugador en línea desarrollado por Riot Games.", "League of Legends, también conocido como LoL, es un popular juego en línea desarrollado por Riot Games."]
+    },
+    {
+        "tag": "consiste",
+        "patterns": ["como funciona al league of legends", "en que consiste league of legends", "como es el juego del league of legends", "explícame cómo funciona league of legends"],
+        "responses": ["League of Legends es un juego de estrategia multijugador en línea donde los jugadores controlan un campeón único con habilidades especiales en una batalla frenética. Durante una partida, los campeones ganan experiencia al eliminar enemigos y adquieren oro para comprar elementos que aumenten su poder. Con más de 150 campeones disponibles, cada partida es única y desafiante, ya que los jugadores deben adaptarse a las estrategias en constante cambio de sus oponentes.",
+        "En League of Legends, los jugadores se sumergen en emocionantes combates de arena, controlando un campeón con habilidades únicas mientras luchan por la supremacía en el campo de batalla. Con más de 150 campeones para elegir, cada partida ofrece una experiencia completamente diferente. Los jugadores ganan experiencia al derrotar enemigos y acumulan oro para comprar elementos que fortalezcan a sus campeones. Con un enfoque en la estrategia y la coordinación de equipo, League of Legends ofrece una experiencia de juego dinámica y desafiante.",
+        "League of Legends transporta a los jugadores a un mundo de batallas épicas y estrategia táctica, donde cada decisión cuenta. Controlando uno de los más de 150 campeones disponibles, los jugadores se enfrentan a sus oponentes en un combate jugador contra jugador. Acumulan experiencia y oro al derrotar enemigos y completar objetivos, lo que les permite mejorar sus habilidades y comprar objetos poderosos que los ayudarán en la batalla. Con un enfoque en la cooperación en equipo y la toma de decisiones rápida, League of Legends ofrece una experiencia de juego emocionante y desafiante para jugadores de todos los niveles.",
+        "En League of Legends, los jugadores asumen el papel de poderosos campeones en una lucha por el dominio en el campo de batalla. Con más de 150 campeones para elegir, cada partida es única y desafiante. Los jugadores ganan experiencia al eliminar enemigos y acumulan oro para comprar objetos que fortalezcan a sus campeones. Con un enfoque en la estrategia y la coordinación de equipo, League of Legends ofrece una experiencia de juego dinámica y emocionante que sigue atrayendo a millones de jugadores en todo el mundo.",
+        "League of Legends te sumerge en un mundo de estrategia y acción, donde cada decisión puede cambiar el curso de la partida. Controlando uno de los más de 150 campeones disponibles, los jugadores se enfrentan en emocionantes batallas de arena. Ganar experiencia al derrotar enemigos y acumular oro para comprar objetos poderosos son las claves para la victoria. Con un enfoque en la cooperación en equipo y la toma de decisiones estratégicas, League of Legends ofrece una experiencia de juego dinámica y emocionante para jugadores de todos los niveles."]
+    },
+    {
+        "tag": "modos",
+        "patterns": ["que modos de juego tiene league of legends", "cuales son los modos de juego en league of legends", "puedes decirme los modos de juego de league of legends", "que opciones de juego hay en league of legends", "como son los diferentes modos de juego en league of legends", "dime los tipos de juego que tiene league of legends", "que tipos de partida se pueden jugar en league of legends", "me puedes explicar los modos de juego disponibles en league of legends", "cuales son las modalidades de juego en league of legends", "explícame que variedades de juego ofrece league of legends"],
+        "responses": ["El modo principal, La Grieta del Invocador, donde dos equipos de cinco jugadores luchan por destruir el 'nexo' enemigo mientras defienden el suyo. La escala competitiva clasificada asigna a los jugadores un rango inicial que pueden ascender a través del sistema de emparejamiento. Además, hay modos permanentes como ARAM (All Random, All Mid), donde los jugadores se enfrentan en un mapa con un solo carril, y Teamfight Tactics, un auto battler donde los jugadores compiten para ser el último en pie colocando unidades en un tablero. Además de estos modos permanentes, League of Legends presenta modos temporales alineados con eventos del juego, como Fuego Ultra Rápido (URF), Uno Para Todos y Bombardeo al Nexo, que ofrecen experiencias únicas y divertidas para los jugadores.",
+        "El modo principal, La Grieta del Invocador, donde dos equipos compiten para destruir el 'nexo' enemigo mientras defienden el suyo. Con un sistema clasificado, los jugadores pueden ascender a través de nueve niveles de habilidad, desde hierro hasta retador. Además, el juego ofrece modos permanentes como ARAM (All Random, All Mid), donde los jugadores luchan en un solo carril con campeones seleccionados al azar, y Teamfight Tactics, un juego de auto battler donde la estrategia y la planificación son clave. Además de estos modos estables, League of Legends presenta eventos temporales con modos como Fuego Ultra Rápido (URF), Uno Para Todos y Bombardeo al Nexo, que ofrecen una experiencia divertida y única para los jugadores durante períodos limitados."]
+    }
+]
+
+}
