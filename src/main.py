@@ -49,41 +49,52 @@ class MyPopup(Popup):
 
 
 class MyApp(App):
-     def seleccionar_archivo(self,instance):
-        archivo = filedialog.askopenfilename()
-        if archivo:
-         print("Archivo seleccionado:", archivo)
-         self.archivo_seleccionado_label.text= archivo
-        
-       
-     def build(self):   
+    archivo = None
+
+    def seleccionar_archivo(self, instance):
+        self.archivo = filedialog.askopenfilename()
+        if self.archivo:
+         print("Archivo seleccionado:", self.archivo)
+         self.archivo_seleccionado_label.text= "Archivo seleccionado " + self.archivo
+
+    def generar_nueva_huella(self, instance):
+        self.seleccionar_archivo(instance)
+        fp.copiar_archivo_a_carpeta(self.archivo)
+
+    def build(self):   
         # Creamos un diseño de caja para organizar nuestros widgets
         layout = BoxLayout(orientation='vertical')
         self.archivo_seleccionado_label= Label(text="")
         
-        button_archivo = Button(text='Seleccionar archivo', size_hint_y=None, height=50)
-        button_archivo.bind(on_press=self.seleccionar_archivo)
+        if  not fp.buscar_archivos_bmp():
+            button_archivo = Button(text='Ingresar huella', size_hint_y=None, height=50)
+            button_archivo.bind(on_press=self.seleccionar_archivo)
         
-        # Crear otro botón
+            layout.add_widget(button_archivo)
+        else:
+            button_registrar = Button(text='Registrar huella', size_hint_y=None, height=50)
+            button_registrar.bind(on_press=self.generar_nueva_huella)
+
+            layout.add_widget(button_registrar)
+
         button_iniciar = Button(text="Iniciar", size_hint_y=None, height=50)
         button_iniciar.bind(on_press=self.check_fingerprint_and_show)
+        layout.add_widget(button_iniciar)
 
         # Agregar botones al diseño
-        layout.add_widget(button_archivo)
-        layout.add_widget(button_iniciar)
+        
         layout.add_widget(self.archivo_seleccionado_label)
 
         return layout
 
      
             
-     def check_fingerprint_and_show(self,instance):
-        archivo =  self.archivo_seleccionado_label.text
-        print("estoy aca",archivo)
-        if self.archivo_seleccionado_label.text != "":
+    def check_fingerprint_and_show(self,instance):
+        print("estoy aca", self.archivo)
+        if self.archivo != None:
             
         # Verificamos la huella digital
-            if fp.check_fingerprint(archivo):
+            if fp.check_fingerprint(self.archivo):
                 # Si la huella digital es correcta, mostramos el cuadro de diálogo
                 self.show_message()
             else:
@@ -91,17 +102,17 @@ class MyApp(App):
                 self.show_invalid_fingerprint_message()
         else:
             self.show_invalid_fingerprint_message()
-     def show_message(self):
+    def show_message(self):
         # Creamos y mostramos el cuadro de diálogo
         popup = MyPopup(callback=self.handle_input)
         popup.open()
 
-     def show_invalid_fingerprint_message(self):
+    def show_invalid_fingerprint_message(self):
         # Creamos y mostramos un cuadro de diálogo de error
         invalid_fingerprint_popup = Popup(title='Error', content=Label(text='Huella digital incorrecta'), size_hint=(None, None), size=(400, 200))
         invalid_fingerprint_popup.open()
 
-     def handle_input(self, user_input):
+    def handle_input(self, user_input):
         # Aquí puedes manejar el valor ingresado por el usuario
         print("Valor ingresado:", user_input)
 

@@ -1,5 +1,50 @@
 import os
+import shutil
 import cv2
+
+def buscar_archivos_bmp():
+    ruta_carpeta = "src/SOCOFing/Real"  # Ruta de la carpeta a buscar
+
+    # Verificar si la carpeta existe
+    if not os.path.exists(ruta_carpeta):
+        raise FileNotFoundError(f"La carpeta {ruta_carpeta} no existe.")
+
+    # Obtener lista de archivos en la carpeta
+    lista_archivos = os.listdir(ruta_carpeta)
+
+    # Verificar si la lista de archivos está vacía
+    # Verificar si hay archivos .bmp en la lista
+
+    for archivo in lista_archivos:
+        print(archivo)
+        if archivo.lower().endswith('.bmp'):
+            return True
+    
+    # Si no se encontraron archivos .bmp
+    return False
+
+def copiar_archivo_a_carpeta(src_ruta_archivo):
+    # Verificar si la ruta del archivo existe
+    if not os.path.exists(src_ruta_archivo):
+        raise FileNotFoundError(f"El archivo {src_ruta_archivo} no existe.")
+
+    # Verificar si la carpeta de destino existe, si no, crearla
+    carpeta_destino = "src/SOCOFing/Real"
+    if not os.path.exists(carpeta_destino):
+        os.makedirs(carpeta_destino)
+
+    # Obtener el nombre del archivo
+    nombre_archivo = os.path.basename(src_ruta_archivo)
+
+    # Construir la ruta de destino
+    ruta_destino_archivo = os.path.join(carpeta_destino, nombre_archivo)
+
+    # Copiar el archivo a la carpeta de destino
+    shutil.copyfile(src_ruta_archivo, ruta_destino_archivo)
+
+    # Devolver la ruta de la copia
+    return ruta_destino_archivo
+
 
 def load_sample_image(file_path):
     """
