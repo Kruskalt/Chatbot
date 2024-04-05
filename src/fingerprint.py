@@ -12,6 +12,7 @@ def load_sample_image(file_path):
         numpy.ndarray: Imagen de muestra.
     """
     sample = cv2.imread(file_path)
+    
     return sample
 
 def load_fingerprint_images(directory):
@@ -73,6 +74,7 @@ def match_fingerprint(sample, fingerprint_images):
 
 def check_fingerprint(user_input):
     sample = load_sample_image(user_input)
+    
     fingerprint_images = load_fingerprint_images("src/SOCOFing/Real")
     best_match, best_score = match_fingerprint(sample, fingerprint_images)
 

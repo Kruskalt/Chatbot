@@ -8,6 +8,11 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 import chatbot as ch
 import fingerprint as fp
+import tkinter as tk
+from tkinter import filedialog
+from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.popup import Popup
+import os
 
 class MyPopup(Popup):
     def __init__(self, callback, **kwargs):
@@ -42,33 +47,61 @@ class MyPopup(Popup):
         # Sobreescribimos el comportamiento predeterminado de on_dismiss
         pass
 
+
 class MyApp(App):
-    def build(self):
-        # Creamos un botón que abrirá el cuadro de diálogo
-        button = Button(text='Introducir Huella')
-        button.bind(on_press=self.check_fingerprint_and_show)
-        return button
+     def seleccionar_archivo(self,instance):
+        archivo = filedialog.askopenfilename()
+        if archivo:
+         print("Archivo seleccionado:", archivo)
+         self.archivo_seleccionado_label.text= archivo
+        
+       
+     def build(self):   
+        # Creamos un diseño de caja para organizar nuestros widgets
+        layout = BoxLayout(orientation='vertical')
+        self.archivo_seleccionado_label= Label(text="")
+        
+        button_archivo = Button(text='Seleccionar archivo', size_hint_y=None, height=50)
+        button_archivo.bind(on_press=self.seleccionar_archivo)
+        
+        # Crear otro botón
+        button_iniciar = Button(text="Iniciar", size_hint_y=None, height=50)
+        button_iniciar.bind(on_press=self.check_fingerprint_and_show)
 
-    def check_fingerprint_and_show(self, instance):
+        # Agregar botones al diseño
+        layout.add_widget(button_archivo)
+        layout.add_widget(button_iniciar)
+        layout.add_widget(self.archivo_seleccionado_label)
+
+        return layout
+
+     
+            
+     def check_fingerprint_and_show(self,instance):
+        archivo =  self.archivo_seleccionado_label.text
+        print("estoy aca",archivo)
+        if self.archivo_seleccionado_label.text != "":
+            
         # Verificamos la huella digital
-        if fp.check_fingerprint("src/SOCOFing/Altered/1__M_Right_little_finger_Zcut.BMP"):
-            # Si la huella digital es correcta, mostramos el cuadro de diálogo
-            self.show_message()
-        else:
+            if fp.check_fingerprint(archivo):
+                # Si la huella digital es correcta, mostramos el cuadro de diálogo
+                self.show_message()
+            else:
             # Si la huella digital no es correcta, mostramos un mensaje
+                self.show_invalid_fingerprint_message()
+        else:
             self.show_invalid_fingerprint_message()
-
-    def show_message(self):
+     def show_message(self):
         # Creamos y mostramos el cuadro de diálogo
         popup = MyPopup(callback=self.handle_input)
         popup.open()
 
-    def show_invalid_fingerprint_message(self):
+     def show_invalid_fingerprint_message(self):
         # Creamos y mostramos un cuadro de diálogo de error
         invalid_fingerprint_popup = Popup(title='Error', content=Label(text='Huella digital incorrecta'), size_hint=(None, None), size=(400, 200))
         invalid_fingerprint_popup.open()
 
-    def handle_input(self, user_input):
+     def handle_input(self, user_input):
         # Aquí puedes manejar el valor ingresado por el usuario
         print("Valor ingresado:", user_input)
 
