@@ -27,11 +27,13 @@ def copiar_archivo_a_carpeta(src_ruta_archivo):
     # Verificar si la ruta del archivo existe
     if not os.path.exists(src_ruta_archivo):
         raise FileNotFoundError(f"El archivo {src_ruta_archivo} no existe.")
-
     # Verificar si la carpeta de destino existe, si no, crearla
+    if check_fingerprint(src_ruta_archivo):
+        return False
     carpeta_destino = "src/SOCOFing/Real"
     if not os.path.exists(carpeta_destino):
         os.makedirs(carpeta_destino)
+    
 
     # Obtener el nombre del archivo
     nombre_archivo = os.path.basename(src_ruta_archivo)
@@ -43,7 +45,7 @@ def copiar_archivo_a_carpeta(src_ruta_archivo):
     shutil.copyfile(src_ruta_archivo, ruta_destino_archivo)
 
     # Devolver la ruta de la copia
-    return ruta_destino_archivo
+    return True
 
 
 def load_sample_image(file_path):
@@ -129,14 +131,15 @@ def check_fingerprint(user_input):
         kp1, kp2, mp = best_match[1], best_match[2], best_match[3]
         puntaje = "PUNTAJE: ", best_score
         # Dibuja los resultados si se encontró una coincidencia
+        """
         result = cv2.drawMatches(sample, kp1, image, kp2, mp, None)
         result = cv2.resize(result, None, fx=4, fy=4)
         cv2.imshow("Result", result)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+        """
         return True
     else:
-        print("Error: No se encontraron coincidencias con la huella introducida")
         return False
 
 def main():

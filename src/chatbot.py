@@ -38,7 +38,7 @@ def bag_of_words(sentence):
 
 #Predecimos la categoría a la que pertenece la oración
 def predict_class(sentence):
-    bow = bag_of_words(sentence)
+    bow = bag_of_words(sentence.lower())
     res = model.predict(np.array([bow]))[0]
     max_index = np.where(res ==np.max(res))[0][0]
     category = classes[max_index]
@@ -64,6 +64,7 @@ def matches_pattern(user_input, patterns):
 
 def chatbot_response(user_input):
     # Obtener los patrones asociados con la etiqueta predicha
+    user_input = user_input.lower()
     predicted_tag = predict_class(user_input)
     patterns = [pattern for intent in intents['intents'] if intent['tag'] == predicted_tag for pattern in intent['patterns']]
     # Verificar si la entrada del usuario coincide con alguno de los patrones
