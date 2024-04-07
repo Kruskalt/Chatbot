@@ -13,18 +13,27 @@ import tkinter as tk
 from tkinter import filedialog
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
 import os
 
 class ChatBotScreen(Popup):
     def __init__(self, callback, **kwargs):
         super(ChatBotScreen, self).__init__(**kwargs)
         self.title = "Chatbot"
+        self.callback = callback
 
         # Creamos un layout para contener los widgets
         layout = BoxLayout(orientation='vertical')
-        
-        self.mensajeChatbot_label = Label(text="¡Bienvenido, soy el Chatbot, aquí apareceran mis respuestas!")
-        layout.add_widget(self.mensajeChatbot_label)
+
+        # Creamos un ScrollView para hacer que el texto del mensaje sea desplazable
+        scroll_view = ScrollView()
+
+        self.mensajeChatbot_label = Label(text="¡Bienvenido, soy el Chatbot, aquí apareceran mis respuestas!", size_hint_y=None, halign='left', valign='top', markup=True)
+        self.mensajeChatbot_label.bind(size=self.update_scroll_view)
+        scroll_view.add_widget(self.mensajeChatbot_label)
+
+        # Añadimos el ScrollView al layout principal
+        layout.add_widget(scroll_view)
 
         # Creamos un campo de entrada de texto
         self.user_input_text = TextInput(multiline=False, hint_text="Ingresa tu consulta aquí")
@@ -37,6 +46,10 @@ class ChatBotScreen(Popup):
 
         # Añadimos el layout al contenido del cuadro de diálogo
         self.content = layout
+
+    def update_scroll_view(self, *args):
+        # Actualiza el tamaño del ScrollView cuando cambia el tamaño del Label
+        self.mensajeChatbot_label.text_size = (self.mensajeChatbot_label.width, None)
 
     def send_input(self, instance):
         # Al hacer clic en el botón, se llama a esta función y se pasa el texto ingresado al callback
@@ -102,8 +115,11 @@ class ChatBot(App):
         return BoxLayout()
     
     def open_chatbot_screen(self):
-        ventana_chatbot = ChatBotScreen(callback= None)
+        ventana_chatbot = ChatBotScreen(callback= self.handle_input)
         ventana_chatbot.open()
+
+    def handle_input(self, user_input):
+        print("Valor ingresado:", user_input)
 
 if __name__ == '__main__':
     ChatBot().run()
