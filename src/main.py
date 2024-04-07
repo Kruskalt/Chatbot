@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import kivy
 kivy.require('2.1.0')  # Reemplaza con tu versión actual de Kivy
 from kivy.app import App
