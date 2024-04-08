@@ -119,8 +119,13 @@ def match_fingerprint(sample, fingerprint_images):
             best_match = (fingerprint_image, keypoints_1, keypoints_2, match_points)
 
     return best_match, best_score
-
+def check_extension(user_input):
+    if not(user_input.lower().endswith('.bmp')):
+            return False
+    return True
 def check_fingerprint(user_input):
+    
+    
     sample = load_sample_image(user_input)
     
     fingerprint_images = load_fingerprint_images("src/SOCOFing/Real")
