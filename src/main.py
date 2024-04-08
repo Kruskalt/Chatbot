@@ -88,7 +88,6 @@ class LoginRegisterScreen(Popup):
         self.content = layout
 
     def login(self, instance):
-        
         direccion_huella = filedialog.askopenfilename()
         if not(fp.check_extension(direccion_huella)):
             invalid_fingerprint_popup = Popup(title='Error', content=Label(text='tipo de archivo incorrecto'), size_hint=(None, None), size=(400, 200))
@@ -104,13 +103,17 @@ class LoginRegisterScreen(Popup):
     def register_fingerprint(self, instance):
         direccion_huella = filedialog.askopenfilename()
         if direccion_huella:
-            if fp.copiar_archivo_a_carpeta(direccion_huella):
-                registro_cumplido_fingerprint_popup = Popup(title='Exito!', content=Label(text='Huella digital registrada correctamente'),
-                                                             size_hint=(None, None), size=(400, 200))
-                registro_cumplido_fingerprint_popup.open()
-            else:
-                invalid_fingerprint_popup = Popup(title='Error', content=Label(text='Huella digital ya registrada'), size_hint=(None, None), size=(400, 200))
+            if not(fp.check_extension(direccion_huella)):
+                invalid_fingerprint_popup = Popup(title='Error', content=Label(text='tipo de archivo incorrecto'), size_hint=(None, None), size=(400, 200))
                 invalid_fingerprint_popup.open()
+            else:
+                if fp.copiar_archivo_a_carpeta(direccion_huella):
+                    registro_cumplido_fingerprint_popup = Popup(title='Exito!', content=Label(text='Huella digital registrada correctamente'),
+                                                             size_hint=(None, None), size=(400, 200))
+                    registro_cumplido_fingerprint_popup.open()
+                else:
+                    invalid_fingerprint_popup = Popup(title='Error', content=Label(text='Huella digital ya registrada'), size_hint=(None, None), size=(400, 200))
+                    invalid_fingerprint_popup.open()
 
 
 class ChatBot(App):
