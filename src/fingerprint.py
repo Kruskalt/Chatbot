@@ -1,5 +1,31 @@
 import os
+import shutil
 import cv2
+
+def copiar_archivo_a_carpeta(src_ruta_archivo):
+    # Verificar si la ruta del archivo existe
+    if not os.path.exists(src_ruta_archivo):
+        raise FileNotFoundError(f"El archivo {src_ruta_archivo} no existe.")
+    # Verificar si la carpeta de destino existe, si no, crearla
+    if check_fingerprint(src_ruta_archivo):
+        return False
+    carpeta_destino = "src/SOCOFing/Real"
+    if not os.path.exists(carpeta_destino):
+        os.makedirs(carpeta_destino)
+    
+
+    # Obtener el nombre del archivo
+    nombre_archivo = os.path.basename(src_ruta_archivo)
+
+    # Construir la ruta de destino
+    ruta_destino_archivo = os.path.join(carpeta_destino, nombre_archivo)
+
+    # Copiar el archivo a la carpeta de destino
+    shutil.copyfile(src_ruta_archivo, ruta_destino_archivo)
+
+    # Devolver la ruta de la copia
+    return True
+
 
 def load_sample_image(file_path):
     """
@@ -12,6 +38,7 @@ def load_sample_image(file_path):
         numpy.ndarray: Imagen de muestra.
     """
     sample = cv2.imread(file_path)
+    
     return sample
 
 def load_fingerprint_images(directory):
@@ -70,9 +97,15 @@ def match_fingerprint(sample, fingerprint_images):
             best_match = (fingerprint_image, keypoints_1, keypoints_2, match_points)
 
     return best_match, best_score
-
+def check_extension(user_input):
+    if not(user_input.lower().endswith('.bmp')):
+            return False
+    return True
 def check_fingerprint(user_input):
+    
+    
     sample = load_sample_image(user_input)
+    
     fingerprint_images = load_fingerprint_images("src/SOCOFing/Real")
     best_match, best_score = match_fingerprint(sample, fingerprint_images)
 
@@ -82,14 +115,15 @@ def check_fingerprint(user_input):
         kp1, kp2, mp = best_match[1], best_match[2], best_match[3]
         puntaje = "PUNTAJE: ", best_score
         # Dibuja los resultados si se encontró una coincidencia
+        """
         result = cv2.drawMatches(sample, kp1, image, kp2, mp, None)
         result = cv2.resize(result, None, fx=4, fy=4)
         cv2.imshow("Result", result)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+        """
         return True
     else:
-        print("Error: No se encontraron coincidencias con la huella introducida")
         return False
 
 def main():

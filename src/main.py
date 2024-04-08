@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import kivy
 kivy.require('2.1.0')  # Reemplaza con tu versión actual de Kivy
 from kivy.app import App
@@ -8,70 +9,126 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 import chatbot as ch
 import fingerprint as fp
+import tkinter as tk
+from tkinter import filedialog
+from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
+import os
 
-class MyPopup(Popup):
+class ChatBotScreen(Popup):
     def __init__(self, callback, **kwargs):
-        super(MyPopup, self).__init__(**kwargs)
+        super(ChatBotScreen, self).__init__(**kwargs)
+        self.title = "Chatbot"
         self.callback = callback
 
         # Creamos un layout para contener los widgets
         layout = BoxLayout(orientation='vertical')
-        
-        self.message_label = Label(text="")
-        layout.add_widget(self.message_label)
+
+        # Creamos un ScrollView para hacer que el texto del mensaje sea desplazable
+        scroll_view = ScrollView()
+
+        self.mensajeChatbot_label = Label(text="¡Bienvenido, soy el Chatbot, aquí apareceran mis respuestas!", size_hint_y=None, halign='left', valign='top', markup=True)
+        self.mensajeChatbot_label.bind(size=self.update_scroll_view)
+        scroll_view.add_widget(self.mensajeChatbot_label)
+
+        # Añadimos el ScrollView al layout principal
+        layout.add_widget(scroll_view)
 
         # Creamos un campo de entrada de texto
-        self.input_text = TextInput(multiline=False)
-        layout.add_widget(self.input_text)
+        self.user_input_text = TextInput(multiline=False, hint_text="Ingresa tu consulta aquí")
+        layout.add_widget(self.user_input_text)
 
         # Creamos un botón para enviar el valor ingresado
-        button = Button(text='Enviar')
+        button = Button(text='Enviar', size_hint_y=None, height=50)
         button.bind(on_press=self.send_input)
         layout.add_widget(button)
 
         # Añadimos el layout al contenido del cuadro de diálogo
         self.content = layout
 
+    def update_scroll_view(self, *args):
+        # Actualiza el tamaño del ScrollView cuando cambia el tamaño del Label
+        self.mensajeChatbot_label.text_size = (self.mensajeChatbot_label.width, None)
+
     def send_input(self, instance):
         # Al hacer clic en el botón, se llama a esta función y se pasa el texto ingresado al callback
-        ints = ch.predict_class(self.input_text.text)
-        res = ch.get_response(ints, ch.intents)
+        res = ch.chatbot_response(self.user_input_text.text)
         self.callback(res)
-        self.message_label.text = res
+        self.mensajeChatbot_label.text = res
+        self.user_input_text.text = ""
 
     def on_dismiss(self):
         # Sobreescribimos el comportamiento predeterminado de on_dismiss
         pass
 
-class MyApp(App):
-    def build(self):
-        # Creamos un botón que abrirá el cuadro de diálogo
-        button = Button(text='Introducir Huella')
-        button.bind(on_press=self.check_fingerprint_and_show)
-        return button
 
-    def check_fingerprint_and_show(self, instance):
-        # Verificamos la huella digital
-        if fp.check_fingerprint("src/SOCOFing/Altered/falsa.BMP"):
-            # Si la huella digital es correcta, mostramos el cuadro de diálogo
-            self.show_message()
+class LoginRegisterScreen(Popup):
+    def __init__(self, callback, **kwargs):
+        super(LoginRegisterScreen, self).__init__(**kwargs)
+        self.callback = callback
+        self.title = "Inicio de sesión"
+
+        layout = BoxLayout(orientation='vertical', spacing=10)
+
+        title_label = Label(text="Bienvenido al Chatbot de League of Legends!", font_size=20)
+        layout.add_widget(title_label)
+
+        instruction_label = Label(text="Por favor, seleccione una opción:", font_size=16)
+        layout.add_widget(instruction_label)
+
+        button_login = Button(text="Iniciar Sesión", size_hint_y=None, height=50)
+        button_login.bind(on_press=self.login)
+        layout.add_widget(button_login)
+
+        button_register = Button(text="Registrar Huella", size_hint_y=None, height=50)
+        button_register.bind(on_press=self.register_fingerprint)
+        layout.add_widget(button_register)
+
+        self.content = layout
+
+    def login(self, instance):
+        direccion_huella = filedialog.askopenfilename()
+        if not(fp.check_extension(direccion_huella)):
+            invalid_fingerprint_popup = Popup(title='Error', content=Label(text='tipo de archivo incorrecto'), size_hint=(None, None), size=(400, 200))
+            invalid_fingerprint_popup.open()
         else:
-            # Si la huella digital no es correcta, mostramos un mensaje
-            self.show_invalid_fingerprint_message()
+            if direccion_huella:
+                if fp.check_fingerprint(direccion_huella):
+                    self.callback()  # Llama a la función de callback al iniciar sesión correctamente
+                else:
+                    invalid_fingerprint_popup = Popup(title='Error', content=Label(text='Huella digital incorrecta'), size_hint=(None, None), size=(400, 200))
+                    invalid_fingerprint_popup.open()
 
-    def show_message(self):
-        # Creamos y mostramos el cuadro de diálogo
-        popup = MyPopup(callback=self.handle_input)
-        popup.open()
+    def register_fingerprint(self, instance):
+        direccion_huella = filedialog.askopenfilename()
+        if direccion_huella:
+            if not(fp.check_extension(direccion_huella)):
+                invalid_fingerprint_popup = Popup(title='Error', content=Label(text='tipo de archivo incorrecto'), size_hint=(None, None), size=(400, 200))
+                invalid_fingerprint_popup.open()
+            else:
+                if fp.copiar_archivo_a_carpeta(direccion_huella):
+                    registro_cumplido_fingerprint_popup = Popup(title='Exito!', content=Label(text='Huella digital registrada correctamente'),
+                                                             size_hint=(None, None), size=(400, 200))
+                    registro_cumplido_fingerprint_popup.open()
+                else:
+                    invalid_fingerprint_popup = Popup(title='Error', content=Label(text='Huella digital ya registrada'), size_hint=(None, None), size=(400, 200))
+                    invalid_fingerprint_popup.open()
 
-    def show_invalid_fingerprint_message(self):
-        # Creamos y mostramos un cuadro de diálogo de error
-        invalid_fingerprint_popup = Popup(title='Error', content=Label(text='Huella digital incorrecta'), size_hint=(None, None), size=(400, 200))
-        invalid_fingerprint_popup.open()
+
+class ChatBot(App):
+    def build(self):
+        login_register_screen = LoginRegisterScreen(callback=self.open_chatbot_screen)
+        login_register_screen.open()
+        return BoxLayout()
+    
+    def open_chatbot_screen(self):
+        ventana_chatbot = ChatBotScreen(callback= self.handle_input)
+        ventana_chatbot.open()
 
     def handle_input(self, user_input):
-        # Aquí puedes manejar el valor ingresado por el usuario
         print("Valor ingresado:", user_input)
 
 if __name__ == '__main__':
-    MyApp().run()
+    ChatBot().run()
+

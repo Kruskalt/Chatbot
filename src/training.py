@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import random
 import json
 import pickle
@@ -21,7 +22,7 @@ from keras.optimizers import SGD
 
 lemmatizer = WordNetLemmatizer()
 
-intents = json.loads(open('../intents.json').read())
+intents = json.loads(open('src/intents.json').read())
 
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -46,8 +47,8 @@ def load_data():
     words = [lemmatizer.lemmatize(word) for word in words if word not in ignore_letters]
     words = sorted(set(words))
 
-    pickle.dump(words, open('words.pkl', 'wb'))
-    pickle.dump(classes, open('classes.pkl', 'wb'))
+    pickle.dump(words, open('src/words.pkl', 'wb'))
+    pickle.dump(classes, open('src/classes.pkl', 'wb'))
     
     return words,classes,documents
 
@@ -92,8 +93,8 @@ def create_model(train_x,train_y):
 
 
 def train_model(model, train_x, train_y):
-    train_process = model.fit(np.array(train_x), np.array(train_y), epochs=1000, batch_size=100, verbose=1)
-    model.save("my_model.keras", train_process)
+    train_process = model.fit(np.array(train_x), np.array(train_y), epochs=10000, batch_size=128, verbose=1)
+    model.save("src/my_model.keras", train_process)
 
 
 # Cargar datos

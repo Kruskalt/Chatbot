@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import random
 import json
 import pickle
@@ -8,10 +9,13 @@ from nltk.stem import WordNetLemmatizer
 
 from keras.models import load_model
 
+from difflib import SequenceMatcher
+from keras.preprocessing.sequence import pad_sequences
+
 lemmatizer = WordNetLemmatizer()
 
 #Importamos los archivos generados en el código anterior
-intents = json.loads(open('./intents.json').read())
+intents = json.loads(open('src/intents.json', encoding='utf-8').read())
 words = pickle.load(open('src/words.pkl', 'rb'))
 classes = pickle.load(open('src/classes.pkl', 'rb'))
 model = load_model('src/my_model.keras')
@@ -35,7 +39,7 @@ def bag_of_words(sentence):
 
 #Predecimos la categoría a la que pertenece la oración
 def predict_class(sentence):
-    bow = bag_of_words(sentence)
+    bow = bag_of_words(sentence.lower())
     res = model.predict(np.array([bow]))[0]
     max_index = np.where(res ==np.max(res))[0][0]
     category = classes[max_index]
@@ -51,14 +55,35 @@ def get_response(tag, intents_json):
             break
     return result
 
+# Función para determinar si la entrada del usuario coincide con alguno de los patrones
+def matches_pattern(user_input, patterns):
+    for pattern in patterns:
+        similarity = SequenceMatcher(None, user_input, pattern).ratio()
+        if similarity > 0.8:  # Ajusta este umbral según sea necesario
+            return True
+    return False
+
+def chatbot_response(user_input):
+    # Obtener los patrones asociados con la etiqueta predicha
+    user_input = user_input.lower()
+    predicted_tag = predict_class(user_input)
+    patterns = [pattern for intent in intents['intents'] if intent['tag'] == predicted_tag for pattern in intent['patterns']]
+    # Verificar si la entrada del usuario coincide con alguno de los patrones
+    if matches_pattern(user_input, patterns):
+        # Si coincide, obtener una respuesta basada en la categoría predicha
+        response = get_response(predicted_tag, intents)
+    else:
+        # Si no coincide, responder que no se comprendió la pregunta
+        response = "Lo siento, no entendí tu pregunta. ¿Puedes intentarlo de nuevo?"
+    return response
+
 #Ejecutamos el chat en bucle
-# terminarBucle = False
-# while not terminarBucle:
-#     message=input("")
-#     if message == "bye":
-#             terminarBucle = True
-#     else:
-#         ints = predict_class(message)
-#         res = get_response(ints, intents)
-#         print(res)
+#terminarBucle = False
+#while not terminarBucle:
+#    message=input("")
+#    if message == "bye":
+#            terminarBucle = True
+#    else:
+#        res = chatbot_response(message)
+#        print(res)
     
